@@ -1,0 +1,53 @@
+classDiagram
+
+    class Cocktail {
+        +name: string
+        +ingredients: Collection
+        +tools: Collection
+        +description: string
+        +recipe: json
+        +created_at: datetime
+        +updated_at: datetime
+    }
+    Recipe "1" *-- "1..*" Ingredient : hasMany
+    Recipe "1" *-- "1..*" Tool : hasMany
+    Recipe ..|> Searchable : use
+    Recipe ..|> HasSlug : use
+
+    class Ingredient {
+        +name: string
+        +created_at: datetime
+        +updated_at: datetime
+    }
+    Ingredient ..|> Searchable : use
+    Ingredient ..|> HasSlug : use
+
+    class Tool {
+        +name: string
+        +created_at: datetime
+        +updated_at: datetime
+    }
+    Tool ..|> Searchable : use
+    Tool ..|> HasSlug : use
+
+    class Tag {
+        +name: string
+        +created_at: datetime
+        +updated_at: datetime
+    }
+    Tag ..|> Searchable : use
+    Tag ..|> HasSlug : use
+
+    class Searchable {
+        <<Trait>>
+        +toSearchableArray(): array
+        +search(string $query): Collection
+        +searchableAs(): string
+    }
+
+    class HasSlug {
+        <<Trait>>
+        +slug: string
+        +getSlugOptions(): SlugOptions
+    }
+

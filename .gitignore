@@ -24,3 +24,5 @@ yarn-error.log
 /.blueprint
 /draft.yaml
 /.vagrant/
+rr
+.rr.yaml

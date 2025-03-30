@@ -36,11 +36,15 @@ Vagrant.configure("2") do |config|
     usermod -aG docker vagrant
 
     # Установка Zsh и Oh My Zsh
+    apt-get install -y git curl
     apt-get install -y zsh git curl
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
     # Смена оболочки по умолчанию для пользователя vagrant
     chsh -s /bin/zsh vagrant
+  SHELL
+
+  config.vm.provision "shell", privileged: false, inline: <<-SHELL
+    sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
   SHELL
 
   # Конфигурация для каждой машины

@@ -3,6 +3,7 @@ FROM ubuntu:24.04
 LABEL maintainer="Taylor Otwell"
 
 ARG WWWGROUP
+ARG WWWUSER
 ARG NODE_VERSION=22
 ARG MYSQL_CLIENT="mysql-client"
 ARG POSTGRES_VERSION=17
@@ -59,10 +60,10 @@ RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.4
 
 RUN userdel -r ubuntu
 RUN groupadd --force -g $WWWGROUP sail
-RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail
+RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u $WWWUSER sail
 
 COPY php.ini /etc/php/8.4/cli/conf.d/99-sail.ini
 
-EXPOSE 80/tcp
+EXPOSE 8000/tcp
 
-CMD "php artisan serve --host=0.0.0.0 --port=3000"
+CMD php artisan serve --host=0.0.0.0 --port=8000

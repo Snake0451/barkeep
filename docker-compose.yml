@@ -4,15 +4,16 @@ services:
             context: './docker/dev/8.4'
             dockerfile: Dockerfile
             args:
+                WWWUSER: '${WWWUSER}'
                 WWWGROUP: '${WWWGROUP}'
         image: 'sail-8.4/app'
+        entrypoint: ["php", "artisan", "octane:start", "--host=0.0.0.0"]
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
-            - '${APP_PORT:-80}:80'
+            - '${APP_PORT:-80}:8000'
             - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
         environment:
-            WWWUSER: '${WWWUSER}'
             LARAVEL_SAIL: 1
             XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
             XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
@@ -40,14 +41,7 @@ services:
         networks:
             - sail
         healthcheck:
-            test:
-                - CMD
-                - pg_isready
-                - '-q'
-                - '-d'
-                - '${DB_DATABASE}'
-                - '-U'
-                - '${DB_USERNAME}'
+            test: ['CMD', 'pg_isready', '-q', '-d', '${DB_DATABASE}', '-U', '${DB_USERNAME}']
             retries: 3
             timeout: 5s
     redis:
@@ -59,11 +53,7 @@ services:
         networks:
             - sail
         healthcheck:
-            test:
-                - CMD
-                - redis-cli
-                - ping
-            retries: 3
+            test: ["CMD", "redis-cli", "ping", "retries: 3"]
             timeout: 5s
     typesense:
         image: 'typesense/typesense:27.1'
@@ -78,13 +68,7 @@ services:
         networks:
             - sail
         healthcheck:
-            test:
-                - CMD
-                - wget
-                - '--no-verbose'
-                - '--spider'
-                - 'http://localhost:8108/health'
-            retries: 5
+            test: ["CMD", "wget", "--no-verbose", "--spider", "http://localhost:8108/health", "retries: 5"]
             timeout: 7s
 networks:
     sail:

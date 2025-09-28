@@ -7,10 +7,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
-        "filament/filament": "^3.3",
+        "filament/filament": "^4.0",
         "laravel-shift/blueprint": "^2.11",
         "laravel/framework": "^12.0",
-        "laravel/octane": "^2.8",
+        "laravel/octane": "^2.12",
         "laravel/tinker": "^2.9",
         "spiral/roadrunner-cli": "^2.6.0",
         "spiral/roadrunner-http": "^3.3.0"
